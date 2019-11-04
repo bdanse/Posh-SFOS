@@ -2,6 +2,7 @@ function Connect-XgAppliance {
     <#
     .Description
     The Connect-XgAppliance function tests the used credentials and create a session context.
+    Default URI would look like https://[IP]:4444/webconsole/APIController
     #>
     [CmdletBinding()]
     param(
