@@ -6,7 +6,7 @@ This project is to be considered a proof-of-concept and not a supported product.
 
 # Usage
 
-Connect with non-encrypted password
+## Connect with non-encrypted password
 
 ``` powershell
 Import-Module .\Posh-SFOS.psm1 -verbose -force
@@ -18,27 +18,6 @@ Connect-XgAppliance -uri $uri -Credentials $Credentials -PlainPass
 Name      Uri                                         Account Message
 ----      ---                                         ------- -------
 Sophos XG https://[IP]:4444/webconsole/APIController  admin   Authentication Successful
-
-```
-
-# Cmdlets
-
-## Connect-XgAppliance
-
-``` powershell
-NAME
-    Connect-XgAppliance
-
-SYNOPSIS
-
-
-SYNTAX
-    Connect-XgAppliance [-Uri] <String> [-Credentials] <PSCredential> [-PlainPass] [-SkipCertificateCheck] [<CommonParameters>]
-
-
-DESCRIPTION
-    The Connect-XgAppliance validates credentials and create a sort of cached session.
-    Default URI would look like https://[IP]:4444/webconsole/APIController
 
 ```
 
@@ -74,6 +53,27 @@ $XgCert = New-XgCertificates @splat
 $XgSp = Get-XgSecurityPolicy -FilterValue 'WAF-www.contoso.com'
 $XgSp.HTTPBasedPolicy.Certificate = $xgcert.Name
 Set-XgSecurityPolicy -InputObject $XgSp
+```
+
+# Cmdlets
+
+## Connect-XgAppliance
+
+``` powershell
+NAME
+    Connect-XgAppliance
+
+SYNOPSIS
+
+
+SYNTAX
+    Connect-XgAppliance [-Uri] <String> [-Credentials] <PSCredential> [-PlainPass] [-SkipCertificateCheck] [<CommonParameters>]
+
+
+DESCRIPTION
+    The Connect-XgAppliance validates credentials and create a sort of cached session.
+    Default URI would look like https://[IP]:4444/webconsole/APIController
+
 ```
 
 ## Get-XgContext
