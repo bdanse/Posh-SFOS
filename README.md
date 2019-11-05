@@ -42,6 +42,40 @@ DESCRIPTION
 
 ```
 
+## Automated Certificate renewal
+
+Request a Let's encrypt certificate using posh-acme with Azure DNS plugin. Import and assign resulting certificatre to Sophos XG firewall.
+For other DNS providers check [here](https://github.com/rmbolger/Posh-ACME/wiki/List-of-Supported-DNS-Providers)
+``` powershell 
+
+Install-Module Az
+Install-Module Posh-Acme
+
+$az = Get-AzContext 
+$fqdn = 'www.contoso.com'
+
+$azDnsParams = @{
+    AzSubscriptionId = $az.Subscription.Id
+    AzTenantId = $az.Tenant.Id
+    AZAppUsername = $appUser.Guid
+    AZAppPasswordInsecure = 'password'
+}
+
+$PACert = New-PACertificate $fqdn -DnsPlugin Azure -PluginArgs $azDnsParams -AcceptTOS -Contact 'webmaster@contoso.com'
+
+$prefix = [datetime]::Now.ToString('yyyyMMddHHmm')
+$splat = @{
+  Name   = "$prefix-$fqdn"
+  Secret = 'poshacme'
+  Path   = $PACert.PfxFullChain
+}
+
+$XgCert = New-XgCertificates @splat
+$XgSp = Get-XgSecurityPolicy -FilterValue 'WAF-www.contoso.com'
+$XgSp.HTTPBasedPolicy.Certificate = $xgcert.Name
+Set-XgSecurityPolicy -InputObject $XgSp
+```
+
 ## Get-XgContext
 
 ``` powershell
