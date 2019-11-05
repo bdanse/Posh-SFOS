@@ -21,9 +21,6 @@ Sophos XG https://[IP]:4444/webconsole/APIController  admin   Authentication Suc
 
 ```
 
-
-
-
 # Cmdlets
 
 ## Connect-XgAppliance
@@ -36,7 +33,7 @@ SYNOPSIS
 
 
 SYNTAX
-    Connect-XgAppliance [-Uri] <String> [-Credentials] <PSCredential> [-PlainPass] [<CommonParameters>]
+    Connect-XgAppliance [-Uri] <String> [-Credentials] <PSCredential> [-PlainPass] [-SkipCertificateCheck] [<CommonParameters>]
 
 
 DESCRIPTION
