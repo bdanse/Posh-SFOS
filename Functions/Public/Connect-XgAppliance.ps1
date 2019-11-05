@@ -13,7 +13,9 @@ function Connect-XgAppliance {
         [System.Management.Automation.PSCredential]$Credentials,
 
         [Parameter(Mandatory = $false)]
-        [switch]$PlainPass
+        [switch]$PlainPass,
+
+        [switch]$SkipCertificateCheck
     )
 
     $FilterValue = $Credentials.UserName
@@ -37,13 +39,14 @@ function Connect-XgAppliance {
     $ht = @{
         Uri     = $Uri
         Content = $content
+        SkipCertificateCheck = $SkipCertificateCheck.IsPresent
     }
 
     $response = Invoke-ApiController @ht
     $result = ([xml]$response).SelectSingleNode("//Login")
 
+    $SessionName = 'XgSession'
     if ($result.status -eq 'Authentication Successful') {
-
 
         $session = [PSCustomObject]@{
             Name         = "Sophos XG"
@@ -52,8 +55,9 @@ function Connect-XgAppliance {
             Credentials  = $Credentials
             PasswordForm = $passwordFrom
             Message      = $result.status
+            SkipCertificateCheck = $SkipCertificateCheck.IsPresent
         }
-        New-Variable -Name XgSession -Visibility Private -Option ReadOnly -Scope Global -Value $session -Force
+        New-Variable -Name $SessionName -Visibility Private -Scope Global -Value $session -Force
         return Get-XgContext
     }
 

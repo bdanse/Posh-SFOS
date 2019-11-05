@@ -5,10 +5,16 @@ function Invoke-ApiController {
         [System.Net.Http.MultipartFormDataContent]$Content,
 
         [parameter(Mandatory = $false)]
-        [string]$Uri
+        [string]$Uri,
+
+        [switch]$SkipCertificateCheck
     )
 
     $httpClientHandler = New-Object System.Net.Http.HttpClientHandler
+
+    if($SkipCertificateCheck.IsPresent) {
+        $httpClientHandler.ServerCertificateCustomValidationCallback = [System.Net.Http.HttpClientHandler]::DangerousAcceptAnyServerCertificateValidator
+    }
     $httpClient = New-Object System.Net.Http.Httpclient $httpClientHandler
 
     if (-not $PSBoundParameters.Uri) {

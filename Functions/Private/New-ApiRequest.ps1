@@ -24,6 +24,6 @@ function New-ApiRequest {
         Content = $content
     }
 
-    $result = Invoke-ApiController @ht
+    $result = Invoke-ApiController @ht -SkipCertificateCheck:$($Global:XgSession.SkipCertificateCheck)
     return $result
 }
